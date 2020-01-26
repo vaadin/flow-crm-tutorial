@@ -1,0 +1,16 @@
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: sans-serif;
+    color: #555;
+}
+
+.content {
+    width: 80%;
+}
+
+.offline-image {
+    width: 100%;
+    margin: 4em 0px;
+}
