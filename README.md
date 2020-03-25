@@ -1,4 +1,4 @@
-# Java Web App tutorial demo application source code
+# Spring Boot and Vaadin tutorial application source code
 
 This repository contains the source code for the [Java Web App development tutorial series](https://vaad.in/37pHRmY).
 
