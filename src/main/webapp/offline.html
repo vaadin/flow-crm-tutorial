@@ -15,7 +15,9 @@
     <p>Your internet connection is offline. Get back online to continue using Vaadin CRM.</p>
 </div>
 <script>
-  window.addEventListener('online', location.reload);
+  window.addEventListener('online', function () {
+    window.location.reload();
+  });
 
 </script>
 </body>
