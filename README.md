@@ -1,3 +1,5 @@
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/vaadin-learning-center/crm-tutorial) 
+
 # Spring Boot and Vaadin tutorial application source code
 
 This repository contains the source code for the [Java Web App development tutorial series](https://vaad.in/37pHRmY).
