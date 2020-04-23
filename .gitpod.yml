@@ -1,2 +1,11 @@
 tasks:
-  - init: npm install && mvn install -DskipTests=false
+  - init: mvn install spring-boot:start spring-boot:stop
+
+    command: mvn
+ports:
+  - port: 8080
+    onOpen: open-preview
+github:
+  prebuilds:
+    # enable prebuilds for all branches in this repo
+    branches: true 
