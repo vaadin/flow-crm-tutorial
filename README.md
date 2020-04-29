@@ -1,7 +1,10 @@
 # Java Web App tutorial demo application source code
 
-This repository contains the source code for the [Java Web App development tutorial series](https://vaad.in/37pHRmY).
+This repository contains the source code for the [Java Web App development tutorial series](https://bit.ly/2W6c8CO).
 
+*Live demo:* https://crm.demo.vaadin.com
+
+[![Open in online IDE ](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/vaadin-learning-center/crm-tutorial) 
 
 ## Branch per chapter
 You can find the completed source for each chapter in separate branches. 
