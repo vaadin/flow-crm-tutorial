@@ -8,8 +8,6 @@ import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
-import java.util.Collections;
-
 @Route("login")
 @PageTitle("Login | Vaadin CRM")
 public class LoginView extends VerticalLayout implements BeforeEnterObserver {
@@ -34,11 +32,10 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent beforeEnterEvent) {
-        if(!beforeEnterEvent.getLocation()
+        if(beforeEnterEvent.getLocation()
         .getQueryParameters()
         .getParameters()
-        .getOrDefault("error", Collections.emptyList())
-        .isEmpty()) {
+        .containsKey("error")) {
             login.setError(true);
         }
     }
