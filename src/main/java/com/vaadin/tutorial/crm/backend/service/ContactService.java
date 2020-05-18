@@ -80,4 +80,12 @@ public class ContactService {
                     }).collect(Collectors.toList()));
         }
     }
+
+    public List<Contact> findAll(String stringFilter) {
+        if (stringFilter == null || stringFilter.isEmpty()) {
+            return contactRepository.findAll();
+        } else {
+            return contactRepository.search(stringFilter);
+        }
+    }
 }
