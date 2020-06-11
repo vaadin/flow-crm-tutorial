@@ -13,6 +13,7 @@ import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.shared.Registration;
 import com.vaadin.tutorial.crm.backend.entity.Company;
 import com.vaadin.tutorial.crm.backend.entity.Contact;
@@ -32,6 +33,7 @@ public class ContactForm extends FormLayout {
     Button close = new Button("Cancel");
 
     Binder<Contact> binder = new BeanValidationBinder<>(Contact.class);
+    private Contact contact;
 
     public ContactForm(List<Company> companies) {
         addClassName("contact-form");
@@ -52,7 +54,8 @@ public class ContactForm extends FormLayout {
     }
 
     public void setContact(Contact contact) {
-        binder.setBean(contact);
+        this.contact = contact;
+        binder.readBean(contact);
     }
 
     private Component createButtonsLayout() {
@@ -73,9 +76,13 @@ public class ContactForm extends FormLayout {
     }
 
     private void validateAndSave() {
-        if (binder.isValid()) {
-            fireEvent(new SaveEvent(this, binder.getBean()));
-        }
+
+      try {
+        binder.writeBean(contact);
+        fireEvent(new SaveEvent(this, contact));
+      } catch (ValidationException e) {
+        e.printStackTrace();
+      }
     }
 
     // Events
