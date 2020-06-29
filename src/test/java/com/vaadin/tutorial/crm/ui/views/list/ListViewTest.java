@@ -27,7 +27,7 @@ public class ListViewTest {
             Assert.assertFalse(form.isVisible());
     		grid.asSingleSelect().setValue(firstContact);
             Assert.assertTrue(form.isVisible());
-            Assert.assertEquals(firstContact, form.binder.getBean());
+            Assert.assertEquals(firstContact.getFirstName(), form.firstName.getValue());
         }
 
     	private Contact getFirstItem(Grid<Contact> grid) {
