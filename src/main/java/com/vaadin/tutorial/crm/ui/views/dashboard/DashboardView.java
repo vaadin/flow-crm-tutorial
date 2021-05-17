@@ -13,10 +13,12 @@ import com.vaadin.tutorial.crm.backend.service.CompanyService;
 import com.vaadin.tutorial.crm.backend.service.ContactService;
 import com.vaadin.tutorial.crm.ui.MainLayout;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.Map;
 
 @PageTitle("Dashboard | Vaadin CRM")
 @Route(value = "dashboard", layout = MainLayout.class)
+@RolesAllowed("ADMIN")
 public class DashboardView extends VerticalLayout {
 
     private final ContactService contactService;

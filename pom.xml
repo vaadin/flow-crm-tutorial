@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.example.application</groupId>
-  <artifactId>my-project</artifactId>
-  <name>My Project</name>
+  <artifactId>crm-tutorial</artifactId>
+  <name>CRM Tutorial</name>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
@@ -12,14 +12,13 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <vaadin.version>14.4.4</vaadin.version>
-
+    <vaadin.version>20.0.0.beta1</vaadin.version>
   </properties>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.2.RELEASE</version>
+    <version>2.4.5</version>
   </parent>
 
   <repositories>
@@ -41,6 +40,13 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
+
+    <repository>
+      <id>vaadin-prereleases</id>
+      <url>
+        https://maven.vaadin.com/vaadin-prereleases/
+      </url>
+    </repository>
   </repositories>
 
   <pluginRepositories>
@@ -52,10 +58,23 @@
         <enabled>false</enabled>
       </snapshots>
     </pluginRepository>
+    <pluginRepository>
+      <id>vaadin-prereleases</id>
+      <url>
+        https://maven.vaadin.com/vaadin-prereleases/
+      </url>
+    </pluginRepository>
   </pluginRepositories>
 
   <dependencyManagement>
     <dependencies>
+      <dependency>
+        <groupId>com.vaadin</groupId>
+        <artifactId>flow-bom</artifactId>
+        <version>8.0-SNAPSHOT</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>com.vaadin</groupId>
         <artifactId>vaadin-bom</artifactId>
@@ -69,46 +88,21 @@
   <dependencies>
     <dependency>
       <groupId>com.vaadin</groupId>
+      <artifactId>flow-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.vaadin</groupId>
+      <artifactId>vaadin-spring</artifactId>
+      <version>18.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.vaadin</groupId>
       <!-- Replace artifactId with vaadin-core to use only free components -->
       <artifactId>vaadin</artifactId>
-      <exclusions>
-        <!-- Webjars are only needed when running in Vaadin 13 compatibility mode -->
-        <exclusion>
-          <groupId>com.vaadin.webjar</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.webjars.bowergithub.insites</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.webjars.bowergithub.polymer</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.webjars.bowergithub.polymerelements</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.webjars.bowergithub.vaadin</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.webjars.bowergithub.webcomponents</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.vaadin</groupId>
       <artifactId>vaadin-spring-boot-starter</artifactId>
-      <exclusions>
-        <!-- Excluding so that webjars are not included. -->
-        <exclusion>
-          <groupId>com.vaadin</groupId>
-          <artifactId>vaadin-core</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <!-- Bean validation implementation-->
@@ -125,20 +119,6 @@
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
       <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <scope>runtime</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-config</artifactId>
     </dependency>
 
     <dependency>
@@ -168,6 +148,11 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
@@ -191,8 +176,8 @@
           -->
       <plugin>
         <groupId>com.vaadin</groupId>
-        <artifactId>vaadin-maven-plugin</artifactId>
-        <version>${vaadin.version}</version>
+        <artifactId>flow-maven-plugin</artifactId>
+        <version>8.0-SNAPSHOT</version>
         <executions>
           <execution>
             <goals>
@@ -208,16 +193,26 @@
     <profile>
       <!-- Production mode is activated using -Pproduction -->
       <id>production</id>
-      <properties>
-        <vaadin.productionMode>true</vaadin.productionMode>
-      </properties>
-
-      <dependencies>
-        <dependency>
-          <groupId>com.vaadin</groupId>
-          <artifactId>flow-server-production-mode</artifactId>
-        </dependency>
-      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.vaadin</groupId>
+            <artifactId>flow-maven-plugin</artifactId>
+            <version>8.0-SNAPSHOT</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>build-frontend</goal>
+                </goals>
+                <phase>compile</phase>
+              </execution>
+            </executions>
+            <configuration>
+              <productionMode>true</productionMode>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
 
     <profile>

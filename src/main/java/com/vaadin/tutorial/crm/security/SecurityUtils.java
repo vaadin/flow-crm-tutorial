@@ -1,48 +1,35 @@
 package com.vaadin.tutorial.crm.security;
 
-import java.util.stream.Stream;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.vaadin.flow.server.HandlerHelper.RequestType;
-import com.vaadin.flow.shared.ApplicationConstants;
-
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.server.VaadinServletRequest;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.stereotype.Component;
 
-/**
- * SecurityUtils takes care of all such static operations that have to do with
- * security and querying rights from different beans of the UI.
- */
+
+@Component
 public final class SecurityUtils {
 
-  private SecurityUtils() {
-    // Util methods only
-  }
+    private static final String LOGOUT_SUCCESS_URL = "/";
 
-  /**
-   * Tests if the request is an internal framework request. The test consists of
-   * checking if the request parameter is present and if its value is consistent
-   * with any of the request types know.
-   *
-   * @param request {@link HttpServletRequest}
-   * @return true if is an internal framework request. False otherwise.
-   */
-  static boolean isFrameworkInternalRequest(HttpServletRequest request) {
-    final String parameterValue = request.getParameter(ApplicationConstants.REQUEST_TYPE_PARAMETER);
-    return parameterValue != null
-        && Stream.of(RequestType.values()).anyMatch(r -> r.getIdentifier().equals(parameterValue));
-  }
+    public UserDetails getAuthenticatedUser() {
+        SecurityContext context = SecurityContextHolder.getContext();
+        Object principal = context.getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            return (UserDetails) context.getAuthentication().getPrincipal();
+        }
+        // Anonymous or no authentication.
+        return null;
+    }
 
-  /**
-   * Tests if some user is authenticated. As Spring Security always will create an
-   * {@link AnonymousAuthenticationToken} we have to ignore those tokens
-   * explicitly.
-   */
-  static boolean isUserLoggedIn() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    return authentication != null && !(authentication instanceof AnonymousAuthenticationToken)
-        && authentication.isAuthenticated();
-  }
+    public void logout() {
+        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+        logoutHandler.setInvalidateHttpSession(false);
+        logoutHandler.logout(
+                VaadinServletRequest.getCurrent().getHttpServletRequest(), null,
+                null);
+        UI.getCurrent().getPage().setLocation(LOGOUT_SUCCESS_URL);
+    }
 }
