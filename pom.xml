@@ -12,7 +12,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <vaadin.version>20.0.0.beta1</vaadin.version>
+    <vaadin.version>21.0.0.alpha9</vaadin.version>
   </properties>
 
   <parent>
@@ -88,16 +88,6 @@
   <dependencies>
     <dependency>
       <groupId>com.vaadin</groupId>
-      <artifactId>flow-server</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.vaadin</groupId>
-      <artifactId>vaadin-spring</artifactId>
-      <version>18.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.vaadin</groupId>
-      <!-- Replace artifactId with vaadin-core to use only free components -->
       <artifactId>vaadin</artifactId>
     </dependency>
     <dependency>
@@ -169,15 +159,10 @@
         </configuration>
       </plugin>
 
-      <!--
-              Take care of synchronizing java dependencies and imports in
-              package.json and main.js files.
-              It also creates webpack.config.js if not exists yet.
-          -->
       <plugin>
         <groupId>com.vaadin</groupId>
-        <artifactId>flow-maven-plugin</artifactId>
-        <version>8.0-SNAPSHOT</version>
+        <artifactId>vaadin-maven-plugin</artifactId>
+        <version>${vaadin.version}</version>
         <executions>
           <execution>
             <goals>
@@ -197,8 +182,8 @@
         <plugins>
           <plugin>
             <groupId>com.vaadin</groupId>
-            <artifactId>flow-maven-plugin</artifactId>
-            <version>8.0-SNAPSHOT</version>
+            <artifactId>vaadin-maven-plugin</artifactId>
+            <version>${vaadin.version}</version>
             <executions>
               <execution>
                 <goals>
