@@ -25,11 +25,10 @@ public final class SecurityUtils {
     }
 
     public void logout() {
+        UI.getCurrent().getPage().setLocation(LOGOUT_SUCCESS_URL);
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
-        logoutHandler.setInvalidateHttpSession(false);
         logoutHandler.logout(
                 VaadinServletRequest.getCurrent().getHttpServletRequest(), null,
                 null);
-        UI.getCurrent().getPage().setLocation(LOGOUT_SUCCESS_URL);
     }
 }
