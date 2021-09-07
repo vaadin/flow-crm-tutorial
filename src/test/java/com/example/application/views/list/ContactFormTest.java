@@ -46,39 +46,39 @@ public class ContactFormTest {
         marcUsher.setCompany(company2);
     }
 
-    @Test
-    public void formFieldsPopulated() {
-        ContactForm form = new ContactForm(companies, statuses);
-        form.setContact(marcUsher);
-        Assert.assertEquals("Marc", form.firstName.getValue());
-        Assert.assertEquals("Usher", form.lastName.getValue());
-        Assert.assertEquals("marc@usher.com", form.email.getValue());
-        Assert.assertEquals(company2, form.company.getValue());
-        Assert.assertEquals(status1, form.status.getValue());
-    }
+@Test
+public void formFieldsPopulated() {
+    ContactForm form = new ContactForm(companies, statuses);
+    form.setContact(marcUsher);
+    Assert.assertEquals("Marc", form.firstName.getValue());
+    Assert.assertEquals("Usher", form.lastName.getValue());
+    Assert.assertEquals("marc@usher.com", form.email.getValue());
+    Assert.assertEquals(company2, form.company.getValue());
+    Assert.assertEquals(status1, form.status.getValue());
+}
 
-    @Test
-    public void saveEventHasCorrectValues() {
-        ContactForm form = new ContactForm(companies, statuses);
-        Contact contact = new Contact();
-        form.setContact(contact);
-        form.firstName.setValue("John");
-        form.lastName.setValue("Doe");
-        form.company.setValue(company1);
-        form.email.setValue("john@doe.com");
-        form.status.setValue(status2);
+@Test
+public void saveEventHasCorrectValues() {
+    ContactForm form = new ContactForm(companies, statuses);
+    Contact contact = new Contact();
+    form.setContact(contact);
+    form.firstName.setValue("John");
+    form.lastName.setValue("Doe");
+    form.company.setValue(company1);
+    form.email.setValue("john@doe.com");
+    form.status.setValue(status2);
 
-        AtomicReference<Contact> savedContactRef = new AtomicReference<>(null);
-        form.addListener(ContactForm.SaveEvent.class, e -> {
-            savedContactRef.set(e.getContact());
-        });
-        form.save.click();
-        Contact savedContact = savedContactRef.get();
+    AtomicReference<Contact> savedContactRef = new AtomicReference<>(null);
+    form.addListener(ContactForm.SaveEvent.class, e -> {
+        savedContactRef.set(e.getContact());
+    });
+    form.save.click();
+    Contact savedContact = savedContactRef.get();
 
-        Assert.assertEquals("John", savedContact.getFirstName());
-        Assert.assertEquals("Doe", savedContact.getLastName());
-        Assert.assertEquals("john@doe.com", savedContact.getEmail());
-        Assert.assertEquals(company1, savedContact.getCompany());
-        Assert.assertEquals(status2, savedContact.getStatus());
-    }
+    Assert.assertEquals("John", savedContact.getFirstName());
+    Assert.assertEquals("Doe", savedContact.getLastName());
+    Assert.assertEquals("john@doe.com", savedContact.getEmail());
+    Assert.assertEquals(company1, savedContact.getCompany());
+    Assert.assertEquals(status2, savedContact.getStatus());
+}
 }

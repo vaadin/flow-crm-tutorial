@@ -1,6 +1,6 @@
 # Spring Boot and Vaadin course source code
 
-This repository contains the source code for the [Building Modern Web Applications With Spring Boot and Vaadin](https://vaadin.com/docs/latest/flow/tutorials/in-depth-course).
+This repository contains the source code for the [Building Modern Web Applications With Spring Boot and Vaadin](https://vaadin.com/docs/v14/flow/tutorials/in-depth-course).
 
 *Live demo:* https://crm.demo.vaadin.com
 
@@ -13,4 +13,4 @@ This repository contains the source code for the [Building Modern Web Applicatio
 
 
 ## Text tutorial
-You can find a text version of the tutorial in the [Vaadin Documentation](https://vaadin.com/docs/latest/flow/tutorials/in-depth-course).
+You can find a text version of the tutorial in the [Vaadin Documentation](https://vaadin.com/docs/v14/flow/tutorials/in-depth-course).
