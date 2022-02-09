@@ -1,2 +1,2 @@
-import {applyTheme as _applyTheme} from './theme-flowcrmtutorial.generated.js';
+import {applyTheme as _applyTheme} from 'generated/theme-flowcrmtutorial.generated.js';
 export const applyTheme = _applyTheme;
