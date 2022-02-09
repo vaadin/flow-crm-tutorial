@@ -9,8 +9,8 @@
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>8</java.version>
-        <vaadin.version>21.0.0</vaadin.version>
+        <java.version>11</java.version>
+        <vaadin.version>22.0.5</vaadin.version>
     </properties>
 
     <parent>
