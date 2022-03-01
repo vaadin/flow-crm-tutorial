@@ -1,6 +1,6 @@
-import './index';
+import './vaadin-featureflags.ts';
 
-import '@vaadin/flow-frontend/VaadinDevmodeGizmo.js';
+import './index';
 
 import { applyTheme } from './theme';
 applyTheme(document);
