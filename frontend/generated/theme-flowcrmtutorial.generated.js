@@ -47,10 +47,10 @@ export const injectGlobalCss = (css, target, first) => {
   }
 };
 import stylesCss from 'themes/flowcrmtutorial/styles.css?inline';
-import { typography } from '@vaadin/vaadin-lumo-styles';
-import { color } from '@vaadin/vaadin-lumo-styles';
-import { spacing } from '@vaadin/vaadin-lumo-styles';
-import { badge } from '@vaadin/vaadin-lumo-styles';
+import { typography } from '@vaadin/vaadin-lumo-styles/typography.js';
+import { color } from '@vaadin/vaadin-lumo-styles/color.js';
+import { spacing } from '@vaadin/vaadin-lumo-styles/spacing.js';
+import { badge } from '@vaadin/vaadin-lumo-styles/badge.js';
 
 window.Vaadin = window.Vaadin || {};
 window.Vaadin.theme = window.Vaadin.theme || {};
