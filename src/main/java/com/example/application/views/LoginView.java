@@ -1,6 +1,7 @@
 package com.example.application.views;
 
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
@@ -22,7 +23,11 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
 
 		login.setAction("login");  
 
-		add(new H1("Vaadin CRM"), login);
+		VerticalLayout header = new VerticalLayout();
+		header.add(new H1("Vaadin CRM"), new Span("Username: user"), new Span("Password: userpass"));
+		header.setAlignItems(Alignment.CENTER);
+
+		add(header, login);
 	}
 
 	@Override
