@@ -18,7 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@IfProfileValue(name="spring.profiles.active", value="it") // enable with -Dspring.profiles.active=dev
+@IfProfileValue(name="spring.profiles.active", value="it") // enable with -Dspring.profiles.active=it
 public abstract class AbstractTest extends ParallelTest {
     private static final String SERVER_HOST = IPAddress.findSiteLocalAddress();
     @LocalServerPort
