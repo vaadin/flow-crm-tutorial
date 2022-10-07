@@ -1,12 +1,11 @@
-package com.example.application.it;
+package com.example.application.tbtests;
 
-import com.example.application.it.elements.LoginViewElement;
-import com.vaadin.flow.component.login.testbench.LoginFormElement;
+import com.example.application.tbtests.elements.LoginViewElement;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class LoginIT extends AbstractTest {
-    public LoginIT() {
+public class LoginTest extends AbstractTest {
+    public LoginTest() {
         super("");
     }
 

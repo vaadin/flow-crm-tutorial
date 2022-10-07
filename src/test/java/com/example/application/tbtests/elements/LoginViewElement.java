@@ -1,4 +1,4 @@
-package com.example.application.it.elements;
+package com.example.application.tbtests.elements;
 
 import com.vaadin.flow.component.login.testbench.LoginFormElement;
 import com.vaadin.flow.component.orderedlayout.testbench.VerticalLayoutElement;

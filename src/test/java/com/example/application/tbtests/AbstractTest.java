@@ -1,4 +1,4 @@
-package com.example.application.it;
+package com.example.application.tbtests;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -9,11 +9,20 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
+import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.test.annotation.IfProfileValue;
+import org.springframework.test.context.junit4.SpringRunner;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@IfProfileValue(name="spring.profiles.active", value="it") // enable with -Dspring.profiles.active=dev
 public abstract class AbstractTest extends ParallelTest {
     private static final String SERVER_HOST = IPAddress.findSiteLocalAddress();
-    private static final int SERVER_PORT = 8080;
+    @LocalServerPort
+    private int port;
     private final String route;
 
     static {
@@ -28,6 +37,7 @@ public abstract class AbstractTest extends ParallelTest {
     }
 
     @Before
+    @Override
     public void setup() throws Exception {
         super.setup();
         getDriver().get(getURL(route)); // Opens the given URL in the browser
@@ -37,8 +47,8 @@ public abstract class AbstractTest extends ParallelTest {
         this.route = route;
     }
 
-    private static String getURL(String route) {
-        return String.format("http://%s:%d/%s", SERVER_HOST, SERVER_PORT, route);
+    private String getURL(String route) {
+        return String.format("http://%s:%d/%s", SERVER_HOST, port, route);
     }
 
     @Rule
