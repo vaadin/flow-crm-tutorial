@@ -4,8 +4,6 @@ This repository contains the source code for the [Building Modern Web Applicatio
 
 *Live demo:* https://crm.demo.vaadin.com
 
-[![Open in online IDE ](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/vaadin/flow-crm-tutorial) 
-
 ## Branches
 
 - The main branch contains the source code for the latest Vaadin release
