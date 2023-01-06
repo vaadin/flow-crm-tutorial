@@ -9,14 +9,14 @@
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>11</java.version>
-        <vaadin.version>23.3.2</vaadin.version>
+        <java.version>17</java.version>
+        <vaadin.version>24.0.0.alpha7</vaadin.version>
     </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.5</version>
+        <version>3.0.1</version>
     </parent>
 
     <repositories>
