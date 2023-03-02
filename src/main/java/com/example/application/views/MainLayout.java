@@ -11,6 +11,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.HighlightConditions;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.spring.security.AuthenticationContext;
+import com.vaadin.flow.theme.lumo.LumoUtility;
+
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +28,9 @@ public class MainLayout extends AppLayout {
 
     private void createHeader() {
         H1 logo = new H1("Vaadin CRM");
-        logo.addClassNames("text-l", "m-m");
+        logo.addClassNames(
+            LumoUtility.FontSize.LARGE,
+            LumoUtility.Margin.MEDIUM);
 
         Button logout = new Button("Log out", e -> authenticationContext.logout());
 
@@ -35,7 +39,9 @@ public class MainLayout extends AppLayout {
         header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
         header.expand(logo);
         header.setWidth("100%");
-        header.addClassNames("py-0", "px-m");
+        header.addClassNames(
+            LumoUtility.Padding.Vertical.NONE,
+            LumoUtility.Padding.Horizontal.MEDIUM);
 
         addToNavbar(header);
 
