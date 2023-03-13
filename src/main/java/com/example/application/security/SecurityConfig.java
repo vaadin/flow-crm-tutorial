@@ -28,7 +28,7 @@ public class SecurityConfig extends VaadinWebSecurity {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     // Authorize access to /images/ without authentication
-    http.authorizeRequests().antMatchers("/images/**").permitAll();
+    http.authorizeHttpRequests().requestMatchers("/images/**").permitAll();
     // Set default security policy that permits Vaadin internal requests and
     // denies all other
     super.configure(http);
