@@ -67,6 +67,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Remove this when fixed version of TB comes with Vaadin -->
+            <dependency>
+                <groupId>com.vaadin</groupId>
+                <artifactId>vaadin-testbench-bom</artifactId>
+                <version>9.0.1</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-bom</artifactId>
