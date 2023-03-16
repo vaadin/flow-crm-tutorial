@@ -1,6 +1,9 @@
-@import url('./views/list-view.css');
-@import url('lumo-css-framework/all-classes.css');
-
+@media all and (max-width: 1100px) {
+  .list-view.editing .toolbar,
+  .list-view.editing .contact-grid {
+    display: none;
+  }
+}
 a[highlight] {
     font-weight: bold;
     text-decoration: underline;

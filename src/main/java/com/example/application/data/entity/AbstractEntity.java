@@ -1,32 +1,40 @@
 package com.example.application.data.entity;
 
-
-
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
-import java.util.UUID;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Version;
 
 @MappedSuperclass
 public abstract class AbstractEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "idgenerator")
+    // The initial value is to account for data.sql demo data ids
+    @SequenceGenerator(name = "idgenerator", initialValue = 1000)
+    private Long id;
 
-    private UUID id;
+    @Version
+    private int version;
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public int getVersion() {
+        return version;
     }
 
     @Override
     public int hashCode() {
-        if (id != null) {
-            return id.hashCode();
+        if (getId() != null) {
+            return getId().hashCode();
         }
         return super.hashCode();
     }
@@ -38,8 +46,8 @@ public abstract class AbstractEntity {
         }
         AbstractEntity other = (AbstractEntity) obj;
 
-        if (id != null) {
-            return id.equals(other.id);
+        if (getId() != null) {
+            return getId().equals(other.getId());
         }
         return super.equals(other);
     }
