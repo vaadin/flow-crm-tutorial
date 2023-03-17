@@ -3,13 +3,13 @@ package com.example.application.views.list;
 import com.example.application.data.entity.Company;
 import com.example.application.data.entity.Contact;
 import com.example.application.data.entity.Status;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class ContactFormTest {
     private List<Company> companies;
@@ -20,7 +20,7 @@ public class ContactFormTest {
     private Status status1;
     private Status status2;
 
-    @Before
+    @BeforeEach  
     public void setupData() {
         companies = new ArrayList<>();
         company1 = new Company();
@@ -50,11 +50,11 @@ public class ContactFormTest {
     public void formFieldsPopulated() {
         ContactForm form = new ContactForm(companies, statuses);
         form.setContact(marcUsher);
-        Assert.assertEquals("Marc", form.firstName.getValue());
-        Assert.assertEquals("Usher", form.lastName.getValue());
-        Assert.assertEquals("marc@usher.com", form.email.getValue());
-        Assert.assertEquals(company2, form.company.getValue());
-        Assert.assertEquals(status1, form.status.getValue());
+        assertEquals("Marc", form.firstName.getValue());
+        assertEquals("Usher", form.lastName.getValue());
+        assertEquals("marc@usher.com", form.email.getValue());
+        assertEquals(company2, form.company.getValue());
+        assertEquals(status1, form.status.getValue());
     }
 
     @Test
@@ -69,16 +69,16 @@ public class ContactFormTest {
         form.status.setValue(status2);
 
         AtomicReference<Contact> savedContactRef = new AtomicReference<>(null);
-        form.addListener(ContactForm.SaveEvent.class, e -> {
+        form.addSaveListener(e -> {
             savedContactRef.set(e.getContact());
         });
         form.save.click();
         Contact savedContact = savedContactRef.get();
 
-        Assert.assertEquals("John", savedContact.getFirstName());
-        Assert.assertEquals("Doe", savedContact.getLastName());
-        Assert.assertEquals("john@doe.com", savedContact.getEmail());
-        Assert.assertEquals(company1, savedContact.getCompany());
-        Assert.assertEquals(status2, savedContact.getStatus());
+        assertEquals("John", savedContact.getFirstName());
+        assertEquals("Doe", savedContact.getLastName());
+        assertEquals("john@doe.com", savedContact.getEmail());
+        assertEquals(company1, savedContact.getCompany());
+        assertEquals(status2, savedContact.getStatus());
     }
 }
