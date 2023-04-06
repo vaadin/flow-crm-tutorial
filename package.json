@@ -19,7 +19,7 @@
     "@vaadin/checkbox": "23.3.10",
     "@vaadin/checkbox-group": "23.3.10",
     "@vaadin/combo-box": "23.3.10",
-    "@vaadin/common-frontend": "0.0.17",
+    "@vaadin/common-frontend": "0.0.18",
     "@vaadin/component-base": "23.3.10",
     "@vaadin/confirm-dialog": "23.3.10",
     "@vaadin/context-menu": "23.3.10",
@@ -132,7 +132,7 @@
     "rollup-plugin-brotli": "3.1.0",
     "strip-css-comments": "5.0.0",
     "transform-ast": "2.4.4",
-    "typescript": "4.9.3",
+    "typescript": "4.9.5",
     "vite": "3.2.5",
     "vite-plugin-checker": "0.5.4",
     "workbox-build": "6.5.4",
@@ -280,7 +280,7 @@
       "@vaadin/checkbox": "23.3.10",
       "@vaadin/checkbox-group": "23.3.10",
       "@vaadin/combo-box": "23.3.10",
-      "@vaadin/common-frontend": "0.0.17",
+      "@vaadin/common-frontend": "0.0.18",
       "@vaadin/component-base": "23.3.10",
       "@vaadin/confirm-dialog": "23.3.10",
       "@vaadin/context-menu": "23.3.10",
@@ -393,13 +393,13 @@
       "rollup-plugin-brotli": "3.1.0",
       "strip-css-comments": "5.0.0",
       "transform-ast": "2.4.4",
-      "typescript": "4.9.3",
+      "typescript": "4.9.5",
       "vite": "3.2.5",
       "vite-plugin-checker": "0.5.4",
       "workbox-build": "6.5.4",
       "workbox-core": "6.5.4",
       "workbox-precaching": "6.5.4"
     },
-    "hash": "812624bcac417183e2f61e5208bdaf9e3897353aabb53fcb24682bdb49c74a11"
+    "hash": "1e94145db7ddf6345e493d9bb852ed0559876d18615636eb3ffb5c92bf0e2615"
   }
 }
