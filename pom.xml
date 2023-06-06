@@ -11,7 +11,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <vaadin.version>24.0.4</vaadin.version>
+        <vaadin.version>24.1.0.rc2</vaadin.version>
         <selenium.version>4.8.1</selenium.version>
     </properties>
 
@@ -67,13 +67,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>com.vaadin</groupId>
-                <artifactId>flow-bom</artifactId>
-                <version>24.0.4</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
             <dependency>
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-bom</artifactId>
