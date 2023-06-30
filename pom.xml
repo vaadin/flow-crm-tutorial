@@ -11,7 +11,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <vaadin.version>24.1.4</vaadin.version>
+        <vaadin.version>24.2-SNAPSHOT</vaadin.version>
         <selenium.version>4.8.1</selenium.version>
     </properties>
 
@@ -97,6 +97,17 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vaadin.componentfactory</groupId>
+            <artifactId>togglebutton</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>flow-webpush</artifactId>
+            <version>${vaadin.version}</version>
         </dependency>
 
         <dependency>
