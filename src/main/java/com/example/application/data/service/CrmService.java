@@ -123,6 +123,13 @@ public class CrmService {
     }
 
     public void addSubscription(String userName, Subscription subscription) {
+        PushSubscription existingSubscription = getPushSubscription(userName);
+        if (existingSubscription != null
+                && existingSubscription.equalsSubscription(subscription)) {
+            // Do not add a subscription if one already in db for user.
+            return;
+        }
         pushSubscriptionRepository.save(new PushSubscription(userName, subscription.endpoint, subscription.keys.p256dh, subscription.keys.auth));
+        getPushSubscription(userName);
     }
 }

@@ -2,6 +2,7 @@ package com.example.application.data.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotEmpty;
+import nl.martijndwars.webpush.Subscription;
 
 @Entity
 public class PushSubscription extends AbstractEntity {
@@ -40,5 +41,11 @@ public class PushSubscription extends AbstractEntity {
 
     public String getAuth() {
         return auth;
+    }
+
+    public boolean equalsSubscription(Subscription subscription) {
+        return  endpoint.equals(subscription.endpoint)
+                && p256dh.equals(subscription.keys.p256dh)
+                && auth.equals(subscription.keys.auth);
     }
 }
