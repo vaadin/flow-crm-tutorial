@@ -1,0 +1,1 @@
+import{z as o}from"./indexhtml-d25e6ad5.js";const r={tagName:"vaadin-form-layout",displayName:"FormLayout",elements:[{selector:"vaadin-form-layout",displayName:"Layout",properties:[o.backgroundColor,o.borderColor,o.borderWidth,o.borderRadius,o.padding]}]};export{r as default};
