@@ -48,4 +48,8 @@ public class PushSubscription extends AbstractEntity {
                 && p256dh.equals(subscription.keys.p256dh)
                 && auth.equals(subscription.keys.auth);
     }
+
+    public Subscription createSubscription() {
+        return new Subscription(getEndpoint(), new Subscription.Keys(getP256dh(), getAuth()));
+    }
 }

@@ -81,10 +81,15 @@ public class MainLayout extends AppLayout {
     }
 
     private void createDrawer() {
-        addToDrawer(new VerticalLayout(
+        VerticalLayout links = new VerticalLayout(
                 new RouterLink("List", ListView.class),
                 new RouterLink("Dashboard", DashboardView.class)
-        ));
+        );
+        if (securityService.getAuthenticatedUser().getAuthorities().stream().anyMatch(a ->
+                a.getAuthority().equals("ROLE_ADMIN"))) {
+            links.add(new RouterLink("Message", MessageView.class));
+        }
+        addToDrawer(links);
     }
 
     @Override

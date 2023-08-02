@@ -132,4 +132,8 @@ public class CrmService {
         pushSubscriptionRepository.save(new PushSubscription(userName, subscription.endpoint, subscription.keys.p256dh, subscription.keys.auth));
         getPushSubscription(userName);
     }
+
+    public List<PushSubscription> getAllSubscriptions() {
+        return pushSubscriptionRepository.findAll();
+    }
 }
