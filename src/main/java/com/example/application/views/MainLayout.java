@@ -1,9 +1,14 @@
 package com.example.application.views;
 
+import java.util.Optional;
+
+import com.example.application.data.entity.PushSubscription;
 import com.example.application.data.service.CrmService;
 import com.example.application.security.SecurityService;
 import com.example.application.views.list.ListView;
 import nl.martijndwars.webpush.Subscription;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.componentfactory.ToggleButton;
 import com.vaadin.flow.component.AttachEvent;
@@ -23,6 +28,7 @@ public class MainLayout extends AppLayout {
 
     private ToggleButton notifications;
     private Subscription clientSubscription;
+    private boolean storeClientSub = false;
 
     public MainLayout(SecurityService securityService, CrmService crmService) {
         this.securityService = securityService;
@@ -33,48 +39,55 @@ public class MainLayout extends AppLayout {
 
     private void createHeader() {
         H1 logo = new H1("Vaadin CRM");
-        logo.addClassNames(
-            LumoUtility.FontSize.LARGE,
-            LumoUtility.Margin.MEDIUM);
+        logo.addClassNames(LumoUtility.FontSize.LARGE,
+                LumoUtility.Margin.MEDIUM);
 
-        String u = securityService.getAuthenticatedUser().getUsername();
+        String userName = securityService.getAuthenticatedUser().getUsername();
         notifications = new ToggleButton("Notifications");
         notifications.addValueChangeListener(event -> {
             if (event.getValue()) {
                 // subscribe
-                if(clientSubscription != null) {
-                    System.out.println("Storing existing subscription for user");
-                    crmService.addSubscription(u, clientSubscription);
-                    clientSubscription = null;
-                } else {
-                    crmService.getWebPush().subscribe(event.getSource().getUI().get(), subscribe -> crmService.addSubscription(u, subscribe));
+                if (storeClientSub) {
+                    getLog().debug("Storing existing subscription for user");
+                    crmService.addSubscription(userName, clientSubscription);
+                } else if(clientSubscription == null) {
+                    getLog().debug("Subscribing push for user {}", userName);
+                    crmService.getWebPush()
+                            .subscribe(event.getSource().getUI().get(),
+                                    subscription -> crmService.addSubscription(
+                                            userName, subscription));
                 }
             } else {
-                if(crmService.hasMultipleSubscriptions(u)) {
+                if (crmService.hasMultipleSubscriptions(userName)) {
                     // unsubscribe
-                    System.out.println("Removing only db subscription");
-                    // TODO:: Not removing subscription correctly from DB!!!
-                    crmService.removeSubscription(u);
+                    getLog().debug("Removing only db subscription");
+                    crmService.removeSubscription(userName, clientSubscription);
                 } else {
-                    System.out.println("Removing subscritpion");
-                    crmService.getWebPush().unsubscribe(event.getSource().getUI().get(), subscribe -> crmService.removeSubscription(u));
+                    getLog().debug("Removing subscription");
+                    crmService.getWebPush()
+                            .unsubscribe(event.getSource().getUI().get(),
+                                    subscription -> crmService.removeSubscription(
+                                            userName, subscription));
                 }
-                // Manually remove sub
+                // Manually remove sub on browser
                 // navigator.serviceWorker.getRegistration().then((reg) => reg.pushManager.getSubscription().then(sub => sub.unsubscribe()));
             }
         });
         // Manually check subscription on client console use:
         // navigator.serviceWorker.getRegistration().then((reg) => reg.pushManager.getSubscription().then(sub => console.log(sub)));
-        Button logout = new Button("Log out " + u, e -> securityService.logout()); // <2>
 
-        var header = new HorizontalLayout(new DrawerToggle(), logo, notifications, logout);
+        Button logout = new Button("Log out " + userName,
+                e -> securityService.logout()); // <2>
 
-        header.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        var header = new HorizontalLayout(new DrawerToggle(), logo,
+                notifications, logout);
+
+        header.setDefaultVerticalComponentAlignment(
+                FlexComponent.Alignment.CENTER);
         header.expand(logo); // <4>
         header.setWidthFull();
-        header.addClassNames(
-            LumoUtility.Padding.Vertical.NONE,
-            LumoUtility.Padding.Horizontal.MEDIUM);
+        header.addClassNames(LumoUtility.Padding.Vertical.NONE,
+                LumoUtility.Padding.Horizontal.MEDIUM);
 
         addToNavbar(header);
 
@@ -83,10 +96,9 @@ public class MainLayout extends AppLayout {
     private void createDrawer() {
         VerticalLayout links = new VerticalLayout(
                 new RouterLink("List", ListView.class),
-                new RouterLink("Dashboard", DashboardView.class)
-        );
-        if (securityService.getAuthenticatedUser().getAuthorities().stream().anyMatch(a ->
-                a.getAuthority().equals("ROLE_ADMIN"))) {
+                new RouterLink("Dashboard", DashboardView.class));
+        if (securityService.getAuthenticatedUser().getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             links.add(new RouterLink("Message", MessageView.class));
         }
         addToDrawer(links);
@@ -99,17 +111,58 @@ public class MainLayout extends AppLayout {
         String username = securityService.getAuthenticatedUser().getUsername();
         boolean hasSubscription = crmService.getSubscription(username) != null;
 
-        crmService.getWebPush().subscriptionExists(attachEvent.getUI(), existsOnClient -> {
-            if (!hasSubscription && existsOnClient) {
-                // get client subscription, but do not activate as for wrong user.
-                crmService.getWebPush().fetchExistingSubscription(attachEvent.getUI(), subscription -> {
-                    clientSubscription = subscription;
-                    notifications.setValue(true);
+        crmService.getWebPush()
+                .subscriptionExists(attachEvent.getUI(), existsOnClient -> {
+                    if (!hasSubscription && existsOnClient) {
+                        getLog().info(
+                                "Found subscription on client, but not in DataBase for {}",
+                                username);
+                        // get client subscription, but do not activate for wrong user on server.
+                        crmService.getWebPush()
+                                .fetchExistingSubscription(attachEvent.getUI(),
+                                        this::checkSubscriptionMatchForClientSubscription);
+                    } else if (hasSubscription && existsOnClient) {
+                        getLog().info(
+                                "Client and data base subscriptions exist");
+                        crmService.getWebPush()
+                                .fetchExistingSubscription(attachEvent.getUI(),
+                                        this::checkClientAndDBSubscriptionMatch);
+                    }
                 });
-            } else if (hasSubscription && existsOnClient) {
-                // set active as user subscription and existing client subscription
-                notifications.setValue(true);
-            }
-        });
+    }
+
+    private void checkSubscriptionMatchForClientSubscription(
+            Subscription subscription) {
+        Optional<PushSubscription> matchingSubscription = crmService.getAllSubscriptions()
+                .stream().filter(sub -> sub.equalsSubscription(subscription))
+                .findFirst();
+        // If no DB subscription exists for this client subscription register for current user.
+        if (!matchingSubscription.isPresent()) {
+            storeClientSub = true;
+            clientSubscription = subscription;
+            notifications.setValue(true);
+        }
+    }
+
+    private void checkClientAndDBSubscriptionMatch(Subscription subscription) {
+        String username = securityService.getAuthenticatedUser().getUsername();
+
+        // User client subscription if user turns on if it wasn't for the current user.
+        clientSubscription = subscription;
+        // If the client subscription doesn't match the stored subscription(s) store as new.
+        if (crmService.getPushSubscriptions(username).stream()
+                .anyMatch(sub -> sub.equalsSubscription(subscription))) {
+            // set active as user subscription and existing client subscription
+            notifications.setValue(true);
+        } else {
+            getLog().info(
+                    "Data base did not contain client subscription for {}.\nBrowser subscription is for another user.",
+                    username);
+
+        }
+    }
+
+    private Logger getLog() {
+        return LoggerFactory.getLogger("Crm");
     }
 }

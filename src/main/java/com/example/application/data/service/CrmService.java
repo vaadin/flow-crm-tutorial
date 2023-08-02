@@ -9,6 +9,7 @@ import com.example.application.data.repository.ContactRepository;
 import com.example.application.data.repository.PushSubscriptionRepository;
 import com.example.application.data.repository.StatusRepository;
 import nl.martijndwars.webpush.Subscription;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -113,9 +114,24 @@ public class CrmService {
         }
     }
 
+    public void removeSubscription(String userName, Subscription subscription) {
+        if(subscription == null) {
+            LoggerFactory.getLogger(CrmService.class).info("Removing user subscription without client match.");
+            removeSubscription(userName);
+            return;
+        }
+        Optional<PushSubscription> pushSubscription = getPushSubscriptions(userName).stream().filter(sub -> sub.equalsSubscription(subscription)).findFirst();
+        if(pushSubscription.isPresent()) {
+            pushSubscriptionRepository.delete(pushSubscription.get());
+        }
+    }
+
+    public List<PushSubscription> getPushSubscriptions(String userName) {
+        return pushSubscriptionRepository.findPushSubscriptionByUserName(userName);
+    }
+
     private PushSubscription getPushSubscription(String userName) {
-        List<PushSubscription> all = pushSubscriptionRepository.findAll();
-        Optional<PushSubscription> subscription = all.stream().filter(sub -> sub.getUserName().equals(userName)).findFirst();
+        Optional<PushSubscription> subscription = getPushSubscriptions(userName).stream().findFirst();
         if(subscription.isPresent()) {
             return subscription.get();
         }
