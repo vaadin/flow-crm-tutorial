@@ -51,3 +51,9 @@ server.ssl.key-store=${user.home}/.config/spring-boot/local-tls.p12
 Go to `chrome://flags` and add `https://{IP-address}:port` to `Insecure origins treated as secure` and enable the experiment.
 
 Navigate to self signed https app and test webpush on mobile.
+
+generate crt from the custom pem root certificate  
+`openssl x509 -inform PEM -outform DM -in rootCA.pem -out local.crt`
+
+install the crt on the android as user certificate.
+
