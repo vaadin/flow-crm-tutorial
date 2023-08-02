@@ -102,7 +102,10 @@ public class MainLayout extends AppLayout {
         crmService.getWebPush().subscriptionExists(attachEvent.getUI(), existsOnClient -> {
             if (!hasSubscription && existsOnClient) {
                 // get client subscription, but do not activate as for wrong user.
-                crmService.getWebPush().fetchExistingSubscription(attachEvent.getUI(), subscription -> clientSubscription = subscription);
+                crmService.getWebPush().fetchExistingSubscription(attachEvent.getUI(), subscription -> {
+                    clientSubscription = subscription;
+                    notifications.setValue(true);
+                });
             } else if (hasSubscription && existsOnClient) {
                 // set active as user subscription and existing client subscription
                 notifications.setValue(true);
