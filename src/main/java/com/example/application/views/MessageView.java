@@ -11,10 +11,12 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.webpush.WebPushMessage;
+import com.vaadin.flow.theme.lumo.LumoUtility;
 
 @RolesAllowed("ADMIN")
 @Route(value = "message", layout = MainLayout.class)
@@ -46,7 +48,7 @@ public class MessageView extends VerticalLayout {
 
         TextField title = new TextField("Message title");
         title.setTooltipText("Tip: Add '{}' to include username to title string");
-        TextField message = new TextField("Message");
+        TextArea message = new TextArea("Message");
 
         Button send = new Button("Send", event -> {
             new Thread(() -> {
@@ -59,7 +61,15 @@ public class MessageView extends VerticalLayout {
                 }
             }).start();
         });
-        VerticalLayout layout = new VerticalLayout(registeredUsers, selectAll, title, message, send);
+
+        selectAll.getStyle().setMargin("0 10px");
+
+        VerticalLayout layout = new VerticalLayout(
+                new Span(registeredUsers, selectAll),
+                title,
+                message,
+                send
+        );
 
 
         return layout;
