@@ -57,3 +57,23 @@ generate crt from the custom pem root certificate
 
 install the crt on the android as user certificate.
 
+##### iOS Safari
+
+For ipad the minimum requirement is `iOS 16.4` which got Web Push support.
+
+To install the local certificate download it for the network and install after it has downloaded.
+
+Then turn on SSL/TLS trust for the certificate, 
+    - go to Settings > General > About > Certificate Trust Settings
+    - Under "Enable full trust for root certificates," turn on trust for the certificate.
+
+Then enable the required advanced features for Safari
+    - go to Settings > Safari > Advanced > Experimental Features
+    - enable `Notifications` and `Push API`
+
+Navigate to the application with safari and through the share menu select `Add to Home Screen`
+
+Open the site from the home screen to be able to make the push subscription.
+
+
+Note! The subject needs to be the server address or a `mailto:` when using Safari and the apple web push server.
