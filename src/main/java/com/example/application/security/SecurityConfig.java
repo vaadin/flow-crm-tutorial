@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity // <1>
 @Configuration
@@ -17,9 +18,8 @@ public class SecurityConfig extends VaadinWebSecurity { // <2>
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-        .authorizeHttpRequests((authz) -> authz
-        .requestMatchers("/images/*.png").permitAll());  // <3>
+        http.authorizeHttpRequests()
+                .requestMatchers(new AntPathRequestMatcher("/images/*.png")).permitAll();  // <3>
         super.configure(http);
         setLoginView(http, LoginView.class); // <4>
     }
