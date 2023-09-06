@@ -11,14 +11,13 @@
 
     <properties>
         <java.version>17</java.version>
-        <vaadin.version>24.2-SNAPSHOT</vaadin.version>
-        <selenium.version>4.8.1</selenium.version>
+        <vaadin.version>24.2.0.alpha10</vaadin.version>
     </properties>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.5</version>
+        <version>3.1.2</version>
     </parent>
 
     <repositories>
@@ -107,7 +106,6 @@
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>flow-webpush</artifactId>
-            <version>${vaadin.version}</version>
         </dependency>
 
         <dependency>

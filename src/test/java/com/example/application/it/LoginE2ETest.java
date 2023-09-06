@@ -1,12 +1,14 @@
 package com.example.application.it;
 
 import com.example.application.it.elements.LoginViewElement;
-import com.vaadin.testbench.BrowserTest;
-import com.vaadin.testbench.BrowserTestBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.env.Environment;
+
+import com.vaadin.testbench.BrowserTest;
+import com.vaadin.testbench.BrowserTestBase;
+import com.vaadin.testbench.IPAddress;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -25,7 +27,8 @@ public class LoginE2ETest extends BrowserTestBase {
 
     @BeforeEach
     void openBrowser() {
-        getDriver().get("http://localhost:" + environment.getProperty("local.server.port") + "/");
+        getDriver().get("http://" + IPAddress.findSiteLocalAddress() + ":"
+                + environment.getProperty("local.server.port") + "/");
     }
 
     @BrowserTest
