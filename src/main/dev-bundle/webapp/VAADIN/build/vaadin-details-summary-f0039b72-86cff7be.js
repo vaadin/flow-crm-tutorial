@@ -1,1 +1,0 @@
-import{G as a,z as t,k as e}from"./indexhtml-d25e6ad5.js";const s={tagName:"vaadin-details-summary",displayName:"DetailsSummary",elements:[{selector:"vaadin-details-summary",displayName:"Summary",properties:[a.textColor,a.fontSize,t.padding]},{selector:"vaadin-details-summary::part(toggle)",displayName:"Toggle",properties:[e.iconColor,e.iconSize]}]};export{s as default};

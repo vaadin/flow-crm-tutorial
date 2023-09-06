@@ -1,1 +1,0 @@
-import{z as a}from"./indexhtml-d25e6ad5.js";const r={tagName:"vaadin-map",displayName:"Map",elements:[{selector:"vaadin-map",displayName:"Map",properties:[a.backgroundColor,a.borderColor,a.borderWidth,a.borderRadius,a.padding]}]};export{r as default};
