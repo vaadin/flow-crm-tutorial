@@ -22,6 +22,9 @@ public class SecurityConfig extends VaadinWebSecurity {
       createUser(new User("user",
               "{noop}userpass",
               Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))));
+      createUser(new User("admin",
+              "{noop}userpass",
+              Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"))));
     }
   }
 
