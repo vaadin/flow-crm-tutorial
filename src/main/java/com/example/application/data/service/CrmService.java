@@ -18,7 +18,7 @@ import java.util.Optional;
 
 import com.vaadin.flow.server.webpush.WebPush;
 
-@Service 
+@Service
 public class CrmService {
 
     @Value("${public.key}")
@@ -46,7 +46,7 @@ public class CrmService {
     }
 
     public List<Contact> findAllContacts(String stringFilter) {
-        if (stringFilter == null || stringFilter.isEmpty()) { 
+        if (stringFilter == null || stringFilter.isEmpty()) {
             return contactRepository.findAll();
         } else {
             return contactRepository.search(stringFilter);
@@ -62,7 +62,7 @@ public class CrmService {
     }
 
     public void saveContact(Contact contact) {
-        if (contact == null) { 
+        if (contact == null) {
             System.err.println("Contact is null. Are you sure you have connected your form to the application?");
             return;
         }
@@ -145,7 +145,7 @@ public class CrmService {
             // Do not add a subscription if one already in db for user.
             return;
         }
-        pushSubscriptionRepository.save(new PushSubscription(userName, subscription.endpoint, subscription.keys.p256dh, subscription.keys.auth));
+        pushSubscriptionRepository.save(new PushSubscription(userName, subscription.endpoint(), subscription.keys().p256dh(), subscription.keys().auth()));
         getPushSubscription(userName);
     }
 
