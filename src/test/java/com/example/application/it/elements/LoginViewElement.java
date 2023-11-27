@@ -14,14 +14,10 @@ public class LoginViewElement {
     }
 
     public boolean login(String username, String password) {
-        root.locator("input[name='username']")
-                .fill(username);
-        root.locator("input[name='password']")
-                .fill(password);
-        Locator logIn = root.locator("vaadin-button")
-                .getByText("Log in");
-        logIn.click();
-
+        root.locator("input[name='username']").fill(username);
+        root.locator("input[name='password']").fill(password);
+        root.locator("vaadin-button").getByText("Log in").click();
+ 
         try {
             // Assert that main layout appears after login
             assertThat(root.page().locator("vaadin-app-layout")).isVisible();
