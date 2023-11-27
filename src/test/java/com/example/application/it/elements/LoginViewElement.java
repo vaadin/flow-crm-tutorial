@@ -1,30 +1,32 @@
 package com.example.application.it.elements;
 
-import com.vaadin.flow.component.applayout.testbench.AppLayoutElement;
-import com.vaadin.flow.component.login.testbench.LoginFormElement;
-import com.vaadin.flow.component.orderedlayout.testbench.VerticalLayoutElement;
-import com.vaadin.testbench.annotations.Attribute;
-import org.openqa.selenium.By;
+import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.concurrent.TimeUnit;
+import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
-@Attribute(name = "class", contains = "login-view")
-public class LoginViewElement extends VerticalLayoutElement {
+public class LoginViewElement {
+
+    private final Locator root;
+
+    public LoginViewElement(Page page) {
+        root = page.locator("vaadin-vertical-layout.login-view");
+    }
 
     public boolean login(String username, String password) {
-        LoginFormElement form = $(LoginFormElement.class).first();
-        form.getUsernameField().setValue(username);
-        form.getPasswordField().setValue(password);
-        form.getSubmitButton().click();
+        root.locator("input[name='username']")
+                .fill(username);
+        root.locator("input[name='password']")
+                .fill(password);
+        Locator logIn = root.locator("vaadin-button")
+                .getByText("Log in");
+        logIn.click();
 
-        // Return true if we end up on another page
         try {
-            getDriver().manage().timeouts().implicitlyWait(Duration.of(1, ChronoUnit.SECONDS));
-            getDriver().findElement(By.tagName("vaadin-app-layout"));
+            // Assert that main layout appears after login
+            assertThat(root.page().locator("vaadin-app-layout")).isVisible();
             return true;
-        } catch (Exception e) {
+        } catch (AssertionError e) {
             return false;
         }
     }
