@@ -1,16 +1,16 @@
-package com.example.application.data.service;
+package com.example.application.services;
 
-import com.example.application.data.entity.Company;
-import com.example.application.data.entity.Contact;
-import com.example.application.data.entity.Status;
-import com.example.application.data.repository.CompanyRepository;
-import com.example.application.data.repository.ContactRepository;
-import com.example.application.data.repository.StatusRepository;
+import com.example.application.data.Company;
+import com.example.application.data.Contact;
+import com.example.application.data.Status;
+import com.example.application.data.CompanyRepository;
+import com.example.application.data.ContactRepository;
+import com.example.application.data.StatusRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service 
+@Service
 public class CrmService {
 
     private final ContactRepository contactRepository;
@@ -19,14 +19,14 @@ public class CrmService {
 
     public CrmService(ContactRepository contactRepository,
                       CompanyRepository companyRepository,
-                      StatusRepository statusRepository) { 
+                      StatusRepository statusRepository) {
         this.contactRepository = contactRepository;
         this.companyRepository = companyRepository;
         this.statusRepository = statusRepository;
     }
 
     public List<Contact> findAllContacts(String stringFilter) {
-        if (stringFilter == null || stringFilter.isEmpty()) { 
+        if (stringFilter == null || stringFilter.isEmpty()) {
             return contactRepository.findAll();
         } else {
             return contactRepository.search(stringFilter);
@@ -42,7 +42,7 @@ public class CrmService {
     }
 
     public void saveContact(Contact contact) {
-        if (contact == null) { 
+        if (contact == null) {
             System.err.println("Contact is null. Are you sure you have connected your form to the application?");
             return;
         }
