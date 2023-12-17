@@ -16,7 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @Theme(value = "flowcrmtutorial")
 @PWA(
-        name = "Vaadin CRM",
+        name = "Vijil CRM",
         shortName = "CRM",
         offlinePath="offline.html",
         offlineResources = { "images/offline.png" }
