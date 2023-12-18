@@ -1,9 +1,9 @@
 name: Docker Image CI
 on:
   push:
-    branches: [ master , feature ]
+    branches: [ v24 ]
   pull_request:
-    branches: [ master ]
+    branches: [ v24 ]
 jobs:
   build:
     runs-on: ubuntu-latest
