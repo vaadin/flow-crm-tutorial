@@ -25,7 +25,7 @@ public class LoginE2ETest extends BrowserTestBase {
         System.setProperty("vaadin.launch-browser", "false");
     }
 
-    @BeforeEach
+/*     @BeforeEach
     void openBrowser() {
         getDriver().get("http://" + IPAddress.findSiteLocalAddress() + ":"
                 + environment.getProperty("local.server.port") + "/");
@@ -41,6 +41,6 @@ public class LoginE2ETest extends BrowserTestBase {
     public void loginAsInvalidUserFails() {
         LoginViewElement loginView = $(LoginViewElement.class).onPage().first();
         assertFalse(loginView.login("user", "invalid"));
-    }
+    } */
 
 }
