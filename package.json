@@ -27,7 +27,7 @@
     "@vaadin/vaadin-context-menu": "4.6.0",
     "@vaadin/vaadin-control-state-mixin": "2.2.6",
     "@vaadin/vaadin-cookie-consent": "1.2.1",
-    "@vaadin/vaadin-core-shrinkwrap": "14.11.0",
+    "@vaadin/vaadin-core-shrinkwrap": "14.11.1",
     "@vaadin/vaadin-crud": "1.4.0",
     "@vaadin/vaadin-custom-field": "1.4.0",
     "@vaadin/vaadin-date-picker": "4.6.0",
@@ -52,10 +52,10 @@
     "@vaadin/vaadin-ordered-layout": "1.4.0",
     "@vaadin/vaadin-overlay": "3.5.1",
     "@vaadin/vaadin-progress-bar": "1.3.0",
-    "@vaadin/vaadin-radio-button": "1.6.1",
+    "@vaadin/vaadin-radio-button": "1.6.2",
     "@vaadin/vaadin-rich-text-editor": "1.4.0",
     "@vaadin/vaadin-select": "2.5.0",
-    "@vaadin/vaadin-shrinkwrap": "14.11.0",
+    "@vaadin/vaadin-shrinkwrap": "14.11.1",
     "@vaadin/vaadin-split-layout": "4.3.1",
     "@vaadin/vaadin-tabs": "3.2.0",
     "@vaadin/vaadin-text-field": "2.10.0",
@@ -119,7 +119,7 @@
       "@vaadin/vaadin-context-menu": "4.6.0",
       "@vaadin/vaadin-control-state-mixin": "2.2.6",
       "@vaadin/vaadin-cookie-consent": "1.2.1",
-      "@vaadin/vaadin-core-shrinkwrap": "14.11.0",
+      "@vaadin/vaadin-core-shrinkwrap": "14.11.1",
       "@vaadin/vaadin-crud": "1.4.0",
       "@vaadin/vaadin-custom-field": "1.4.0",
       "@vaadin/vaadin-date-picker": "4.6.0",
@@ -144,10 +144,10 @@
       "@vaadin/vaadin-ordered-layout": "1.4.0",
       "@vaadin/vaadin-overlay": "3.5.1",
       "@vaadin/vaadin-progress-bar": "1.3.0",
-      "@vaadin/vaadin-radio-button": "1.6.1",
+      "@vaadin/vaadin-radio-button": "1.6.2",
       "@vaadin/vaadin-rich-text-editor": "1.4.0",
       "@vaadin/vaadin-select": "2.5.0",
-      "@vaadin/vaadin-shrinkwrap": "14.11.0",
+      "@vaadin/vaadin-shrinkwrap": "14.11.1",
       "@vaadin/vaadin-split-layout": "4.3.1",
       "@vaadin/vaadin-tabs": "3.2.0",
       "@vaadin/vaadin-text-field": "2.10.0",
@@ -184,6 +184,6 @@
       "webpack-dev-server": "3.11.0",
       "webpack-merge": "4.2.2"
     },
-    "hash": "44da6ad1b5929a01d15c8b09d43ebcfc63e5a3f8907bec85beab7cf015ee11aa"
+    "hash": "3913b4299a463a7b5c3921972e7bd8816858fb27b03127866cae73d028a2154a"
   }
 }
