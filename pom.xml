@@ -11,6 +11,7 @@
     <properties>
         <java.version>11</java.version>
         <vaadin.version>23.3.31</vaadin.version>
+        <selenium.version>4.16.1</selenium.version>
     </properties>
 
     <parent>
