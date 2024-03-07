@@ -10,7 +10,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <vaadin.version>23.3.33</vaadin.version>
+        <vaadin.version>23.4.0</vaadin.version>
         <selenium.version>4.16.1</selenium.version>
     </properties>
 
