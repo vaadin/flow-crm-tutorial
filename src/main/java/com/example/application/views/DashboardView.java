@@ -6,6 +6,7 @@ import com.vaadin.flow.component.charts.Chart;
 import com.vaadin.flow.component.charts.model.ChartType;
 import com.vaadin.flow.component.charts.model.DataSeries;
 import com.vaadin.flow.component.charts.model.DataSeriesItem;
+import com.vaadin.flow.component.charts.model.Tooltip;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -42,6 +43,9 @@ public class DashboardView extends VerticalLayout {
         service.findAllCompanies().forEach(company ->
             dataSeries.add(new DataSeriesItem(company.getName(), company.getEmployeeCount()))); // <5>
         chart.getConfiguration().setSeries(dataSeries);
+        Tooltip tooltip = new Tooltip();
+        tooltip.setFormatter("'The value for <b>' + this.x + '</b> is <b>' + this.y + '</b>'");
+        chart.getConfiguration().setTooltip(tooltip);
         return chart;
     }
 }

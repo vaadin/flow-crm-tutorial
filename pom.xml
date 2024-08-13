@@ -11,7 +11,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <vaadin.version>24.4.8</vaadin.version>
+        <vaadin.version>24.5-SNAPSHOT</vaadin.version>
     </properties>
 
     <parent>
@@ -36,6 +36,9 @@
             <url>
                 https://maven.vaadin.com/vaadin-prereleases/
             </url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
         <!-- Repository used by many Vaadin add-ons -->
         <repository>
@@ -61,6 +64,9 @@
             <url>
                 https://maven.vaadin.com/vaadin-prereleases/
             </url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </pluginRepository>
     </pluginRepositories>
 
