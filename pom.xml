@@ -10,8 +10,9 @@
     <packaging>jar</packaging>
 
     <properties>
-        <java.version>8</java.version>
-        <vaadin.version>14.14.0</vaadin.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <vaadin.version>14.14.1</vaadin.version>
     </properties>
 
     <parent>
