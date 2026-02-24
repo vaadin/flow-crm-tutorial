@@ -6,6 +6,7 @@ import com.example.application.views.LoginView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.grid.GridTester;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.login.LoginForm;
@@ -17,14 +18,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class CrmUIUnitTest extends SpringUIUnitTest {
-
-    static {
-        System.setProperty("vaadin.launch-browser", "false");
-    }
 
     // ==================== ListView Tests ====================
 
@@ -38,53 +38,49 @@ public class CrmUIUnitTest extends SpringUIUnitTest {
     @Test
     @WithMockUser(username = "user", roles = "USER")
     void listView_gridIsPopulated() {
-        navigate(ListView.class);
-        @SuppressWarnings("unchecked")
-        Grid<Contact> grid = $view(Grid.class).first();
-        assertTrue(test(grid).size() > 0,
+        ListView view = navigate(ListView.class);
+        assertTrue(test(view.grid).size() > 0,
                 "Grid should contain contacts from the database");
     }
 
     @Test
     @WithMockUser(username = "user", roles = "USER")
     void listView_formIsInitiallyHidden() {
-        navigate(ListView.class);
-        // Form is in the tree but not visible — $view query only finds usable components
-        assertTrue($view(ContactForm.class).all().isEmpty(),
-                "Contact form should not be usable when no contact is selected");
+        ListView view = navigate(ListView.class);
+        assertFalse($(ContactForm.class).exists(),
+                "Contact form should be hidden when no contact is selected");
     }
 
     @Test
     @WithMockUser(username = "user", roles = "USER")
     void listView_selectContact_formIsShownWithData() {
-        navigate(ListView.class);
-        @SuppressWarnings("unchecked")
-        Grid<Contact> grid = $view(Grid.class).first();
-        Contact firstContact = test(grid).getRow(0);
+        ListView view = navigate(ListView.class);
 
-        test(grid).select(0);
+        GridTester<Grid<Contact>, Contact> grid_ = test(view.grid);
+        Contact firstContact = grid_.getRow(0);
+        grid_.clickRow(0);
 
-        ContactForm form = $view(ContactForm.class).first();
-        assertTrue(form.isVisible(),
-                "Form should be visible when a contact is selected");
-        assertEquals(firstContact.getFirstName(),
-                test(grid).getCellText(0, 0));
+        ContactForm form = $(ContactForm.class).single();
+        assertEquals(firstContact.getFirstName(), form.firstName.getValue());
+        assertEquals(firstContact.getLastName(), form.lastName.getValue());
+        assertEquals(firstContact.getEmail(), form.email.getValue());
     }
 
     @Test
     @WithMockUser(username = "user", roles = "USER")
-    void listView_cancelButton_hidesForm() {
-        navigate(ListView.class);
-        @SuppressWarnings("unchecked")
-        Grid<Contact> grid = $view(Grid.class).first();
+    void listView_deselectContact_formIsHidden() {
+        ListView view = navigate(ListView.class);
+        var grid_ = test(view.grid);
 
-        test(grid).select(0);
-        assertFalse($view(ContactForm.class).all().isEmpty(),
-                "Form should be visible after selecting a contact");
+        // select
+        grid_.clickRow(0);
+        assertTrue($(ContactForm.class).exists(),
+                "Form should be visible when contact is selected");
 
-        test($(Button.class).withText("Cancel").single()).click();
-        assertTrue($view(ContactForm.class).all().isEmpty(),
-                "Form should be hidden after clicking Cancel");
+        // deselect
+        grid_.clickRow(0);
+        assertFalse($(ContactForm.class).exists(),
+                "Form should be hidden when contact is deselected");
     }
 
     @Test
@@ -92,32 +88,27 @@ public class CrmUIUnitTest extends SpringUIUnitTest {
     void listView_addContactButton_showsEmptyForm() {
         navigate(ListView.class);
 
-        test($(Button.class).withText("Add contact").single()).click();
+        $(Button.class).withText("Add contact").first().click();
 
-        ContactForm form = $view(ContactForm.class).first();
-        assertTrue(form.isVisible(),
-                "Form should be visible after clicking Add contact");
+        ContactForm form = $(ContactForm.class).single();
 
-        TextField firstName = $view(TextField.class)
-                .withPropertyValue(TextField::getLabel, "First name").single();
-        assertEquals("", firstName.getValue(),
+        assertEquals("", form.firstName.getValue(),
                 "First name should be empty for a new contact");
+        assertEquals("", form.lastName.getValue(),
+                "Last name should be empty for a new contact");
     }
 
     @Test
     @WithMockUser(username = "user", roles = "USER")
     void listView_filterByName_gridIsFiltered() {
-        navigate(ListView.class);
-        @SuppressWarnings("unchecked")
-        Grid<Contact> grid = $view(Grid.class).first();
-        int totalContacts = test(grid).size();
+        ListView view = navigate(ListView.class);
+        var grid_ = test(view.grid);
+        int totalContacts = grid_.size();
         assertTrue(totalContacts > 0, "Grid should have contacts initially");
 
-        TextField filter = $view(TextField.class)
-                .withPropertyValue(TextField::getPlaceholder, "Filter by name...").single();
-        test(filter).setValue("Avery");
+        test(view.filterText).setValue("Mar");
 
-        int filteredContacts = test(grid).size();
+        int filteredContacts = grid_.size();
         assertTrue(filteredContacts <= totalContacts,
                 "Filtered results should be <= total contacts");
     }
@@ -136,11 +127,7 @@ public class CrmUIUnitTest extends SpringUIUnitTest {
     void dashboardView_contactStatsAreDisplayed() {
         navigate(DashboardView.class);
 
-        Span stats = $(Span.class).all().stream()
-                .filter(s -> s.getText() != null && s.getText().contains("contacts"))
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("Contact stats span not found"));
-
+        Span stats = $(Span.class).withTextContaining("contacts").single();
         assertTrue(stats.getText().matches("\\d+ contacts"),
                 "Stats should show number of contacts, got: " + stats.getText());
     }
@@ -158,8 +145,8 @@ public class CrmUIUnitTest extends SpringUIUnitTest {
     @WithAnonymousUser
     void loginView_containsLoginForm() {
         navigate(LoginView.class);
-        LoginForm loginForm = $(LoginForm.class).first();
-        assertNotNull(loginForm, "Login page should contain a LoginForm");
+
+        assertTrue($(LoginForm.class).exists(), "Login page should contain a LoginForm");
     }
 
     @Test
@@ -200,9 +187,8 @@ public class CrmUIUnitTest extends SpringUIUnitTest {
     @WithMockUser(username = "user", roles = "USER")
     void security_authenticatedUser_canAccessDashboard() {
         navigate(DashboardView.class);
-        assertNotNull($(Span.class).all().stream()
-                        .filter(s -> s.getText() != null && s.getText().contains("contacts"))
-                        .findFirst().orElse(null),
+
+        assertTrue($(Span.class).withTextContaining("contacts").exists(),
                 "Authenticated user should see contact stats");
     }
 
@@ -211,24 +197,17 @@ public class CrmUIUnitTest extends SpringUIUnitTest {
     @Test
     @WithMockUser(username = "user", roles = "USER")
     void listView_editContact_formFieldsMatchSelectedContact() {
-        navigate(ListView.class);
-        @SuppressWarnings("unchecked")
-        Grid<Contact> grid = $view(Grid.class).first();
-        Contact contact = test(grid).getRow(0);
+        ListView view = navigate(ListView.class);
+        var grid_ = test(view.grid);
+        Contact contact = grid_.getRow(0);
+        grid_.clickRow(0);
 
-        test(grid).select(0);
+        TextField firstName = $view(TextField.class).withCaption("First name").single();
+        TextField lastName = $view(TextField.class).withCaption("Last name").single();
+        EmailField email = $view(EmailField.class).single();
 
-        TextField firstName = $view(TextField.class)
-                .withPropertyValue(TextField::getLabel, "First name").single();
-        TextField lastName = $view(TextField.class)
-                .withPropertyValue(TextField::getLabel, "Last name").single();
-        EmailField email = $view(EmailField.class).first();
-        @SuppressWarnings("unchecked")
-        ComboBox<Object> company = $view(ComboBox.class)
-                .withPropertyValue(ComboBox::getLabel, "Company").single();
-        @SuppressWarnings("unchecked")
-        ComboBox<Object> status = $view(ComboBox.class)
-                .withPropertyValue(ComboBox::getLabel, "Status").single();
+        ComboBox<?> company = $view(ComboBox.class).withCaption("Company").single();
+        ComboBox<?> status = $view(ComboBox.class).withCaption("Status").single();
 
         assertEquals(contact.getFirstName(), firstName.getValue());
         assertEquals(contact.getLastName(), lastName.getValue());
@@ -236,5 +215,20 @@ public class CrmUIUnitTest extends SpringUIUnitTest {
         assertEquals(contact.getCompany(), test(company).getSelected());
         assertEquals(contact.getStatus(), test(status).getSelected());
     }
+
+    @Test
+    @WithMockUser(username = "user", roles = "USER")
+    void listView_closeForm_formIsHidden() {
+        ListView view = navigate(ListView.class);
+        test(view.grid).clickRow(0);
+
+        assertTrue($(ContactForm.class).exists());
+
+        test($(Button.class).withText("Cancel").single()).click();
+        assertFalse($(ContactForm.class).exists(),
+                "Form should be hidden after clicking Cancel");
+    }
+
+    // ==================== Helper Methods ====================
 
 }
