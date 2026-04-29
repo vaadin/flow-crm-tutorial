@@ -1,0 +1,54 @@
+name: Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: ${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: '21'
+  NODE_VERSION: '24'
+  MAVEN_VERSION: '3.8.7'
+
+jobs:
+  validation:
+    name: Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+      - uses: stCarolas/setup-maven@v5.1
+        with:
+          maven-version: ${{ env.MAVEN_VERSION }}
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: Set TB License
+        run: |
+          TB_LICENSE=${{secrets.TB_LICENSE}}
+          mkdir -p ~/.vaadin/
+          echo '{"username":"'`echo $TB_LICENSE | cut -d / -f1`'","proKey":"'`echo $TB_LICENSE | cut -d / -f2`'"}' > ~/.vaadin/proKey
+      - name: Verify
+        run: mvn -B -ntp verify -Pit -Dcom.vaadin.testbench.Parameters.maxAttempts=2 -Dcom.vaadin.testbench.Parameters.headless=true -Dheadless=true
+      - name: Publish test results
+        if: ${{ always() }}
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: '**/failsafe-reports/TEST-*.xml'
+      - name: Upload test artifacts
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifacts
+          path: |
+            **/failsafe-reports/
+            error-screenshots/
