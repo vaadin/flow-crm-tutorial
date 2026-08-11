@@ -127,6 +127,7 @@
   "devDependencies": {
     "@rollup/plugin-replace": "3.1.0",
     "@rollup/pluginutils": "4.2.1",
+    "@types/node": "18.19.115",
     "async": "3.2.6",
     "glob": "7.2.3",
     "mkdirp": "3.0.1",
@@ -390,6 +391,7 @@
     "devDependencies": {
       "@rollup/plugin-replace": "3.1.0",
       "@rollup/pluginutils": "4.2.1",
+      "@types/node": "18.19.115",
       "async": "3.2.6",
       "glob": "7.2.3",
       "mkdirp": "3.0.1",
@@ -403,6 +405,6 @@
       "workbox-core": "6.6.1",
       "workbox-precaching": "6.6.1"
     },
-    "hash": "4ecb2dc86470a4c7384be1b140795089e23948611a9496ad30fd8ad53e26d278"
+    "hash": "1e77e51598fe3d2aa331a62309c3913becebb35a865f40f79bf81d37502af146"
   }
 }
